@@ -1,47 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Speed Internet</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-</head>
-<body>
-    <div class="container">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./css/style.css">
 
+    <style>
+      
+    </style>
+  </head>
+  <body>
+    <div id="loader" class="loader">
+      <img id='loading' src='./img/loading.gif'>
+    </div>
+    <div class="data">
+      <div>
         <h1>Internet Speed</h1>
-        <button class="btn-danger" id="check">Check Speed</button>
+        <p>
+          <button class="btn-danger" id="check">Check Speed</button>
+        </p>
         <div id="upSpeed">
-            <p></p>
+          <span></span>
         </div>
         <div id="downSpeed">
-            <p></p>
+          <span></span>
         </div>
+        <div id="ping">
+          <span></span>
+        </div>
+        <div id="packetLoss">
+          <span></span>
+        </div>
+      </div>
     </div>
-</body>
+    
+  </body>
 </html>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
-    $(document).ready(function(){
-        $('#check').on('click', function () {
-            console.log('clicked');
+  $(document).ready(function () {
+    $(".loader").hide();
 
+    $("#check").on("click", function () {
+      console.log("clicked");
+      // $("#check").hide();
 
-            $.ajax({
-                method:"GET",
-                url:"/checkspeed",
-                success: function(data){
-                    console.log(data)
-                    var upload = data.upspeed
-                    var download = data.downspeed
-                    $("#upSpeed > p").text("upload speed: " + upload + " mbps")
-                    $("#downSpeed > p").text("download speed: " + download + " mbps") 
+      $(".loader").fadeIn();
 
-                }
+      
+      // $("#upSpeed > p").text(" loading upload speed");
+      // $("#downSpeed > p").text("loading download speed");
 
-            })
-        })
+      $.ajax({
+        method: "GET",
+        url: "/checkspeed",
+        success: function (data) {
+          console.log(data);
+          var upload = data.upspeed;
+          var download = data.downspeed;
+          var ping = data.ping.avg;
+          var packetLoss = data.ping.loss;
+          $(".loader").fadeOut(200);
+          $("#upSpeed > span").text("upload speed: " + upload + " mbps");
+          $("#downSpeed > span").text("download speed: " + download + " mbps");
+
+          $("#ping > span").text("ping: " + parseFloat(ping).toFixed(2) + " ms");
+          $("#packetLoss > span").text("Packet Loss: " + packetLoss);
+        },
+      });
     });
+  });
 </script>
