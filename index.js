@@ -60,7 +60,7 @@ async function getPing() {
   for (let host of hosts) {
     // WARNING: -i 2 argument may not work in other platform like windows
     let res = await ping.promise.probe(host, {
-      timeout: 1000,
+      timeout: 30000,
       extra: ['-i', '2'],
     });
     
