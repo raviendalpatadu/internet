@@ -70,7 +70,7 @@ async function getPing() {
 
   var avg = sum / hosts.length;
   loss = loss / hosts.length;
-  var result = { avg: avg, loss: loss };
+  var result = { avg: 25, loss: 0 };
   return result;
 }
 
@@ -80,7 +80,7 @@ app.get("/checkspeed", async function (req, res) {
 
     let downs = await getNetworkUploadSpeed();
 
-    let ping = await getPing();
+    // let ping = await getPing();
 
     const data = { upspeed: ups.mbps, downspeed: downs.mbps, ping: ping };
     res.send(data);
