@@ -4,6 +4,8 @@ const ping = require("ping");
 const testNetworkSpeed = new NetworkSpeed();
 const path = require("path");
 const { type } = require("os");
+const axios = require("axios");
+const API_KEY = "a30243bb6649460ab61e3f3f6be3fb07";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -73,12 +75,22 @@ async function getPing() {
     return result;
   } catch (error) {
     console.log("error ekak ping eke: " + error);
-    result = {avg:0, loss:0};
+    result = { avg: 0, loss: 0 };
     return result;
-
   }
 }
 
+async function getLocation(API_KEY) {
+  axios
+    .get("https://ipgeolocation.abstractapi.com/v1/?api_key=" + API_KEY)
+    .then((response) => {
+      // console.log(response.data)
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("error in geolocation api: " + error);
+    });
+}
 app.get("/checkspeed", async function (req, res) {
   try {
     let ups = await getNetworkDownloadSpeed();
@@ -87,7 +99,32 @@ app.get("/checkspeed", async function (req, res) {
 
     let ping = await getPing();
 
-    const data = { upspeed: ups.mbps, downspeed: downs.mbps, ping: ping };
+    // let locationData = await getLocation(API_KEY);
+
+    let locationData = await axios
+      .get("https://ipgeolocation.abstractapi.com/v1/?api_key=" + API_KEY)
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        console.log("error in geolocation api: " + error);
+      });
+
+    const data = {
+      upspeed: ups.mbps,
+      downspeed: downs.mbps,
+      ping: ping,
+      profile: {
+        ip_address: locationData.ip_address,
+        isp_name: locationData.connection.isp_name,
+      },
+      ISP: {
+        name: locationData.connection.autonomous_system_organization,
+        city: locationData.city,
+        region: locationData.region,
+        country: locationData.country
+      }
+    };
     res.send(data);
   } catch (error) {
     console.log("error ekak /checkspeed eke" + error);
