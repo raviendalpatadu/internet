@@ -97,8 +97,6 @@
 
       $(".loader").fadeIn();
       $("#dataGroup").children().hide();
-      // $("#upSpeed > p").text(" loading upload speed");
-      // $("#downSpeed > p").text("loading download speed");
 
       $.ajax({
         method: "GET",
@@ -108,7 +106,7 @@
           var download = data.downspeed;
           var ping = data.ping.avg;
           var packetLoss = data.ping.loss;
-
+          console.log(data)
           $(".loader").fadeOut(200);
 
           $('#upSpeed').fadeIn(1000)
