@@ -60,7 +60,7 @@ async function getPing() {
     for (let host of hosts) {
       // WARNING: -i 2 argument may not work in other platform like windows
       let res = await ping.promise.probe(host, {
-        timeout: 10,
+        timeout: 30,
       });
 
       sum = sum + res.time;
