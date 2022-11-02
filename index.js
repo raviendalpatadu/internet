@@ -53,14 +53,14 @@ async function getNetworkUploadSpeed() {
 }
 
 async function getPing() {
-  var hosts = ["facebook.com"];
+  var hosts = ["google.com"];
   var sum = 0;
   var loss = 0;
   try {
     for (let host of hosts) {
       // WARNING: -i 2 argument may not work in other platform like windows
       let res = await ping.promise.probe(host, {
-        timeout: 30,
+        timeout: 1,
       });
 
       sum = sum + res.time;
