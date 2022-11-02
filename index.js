@@ -53,7 +53,7 @@ async function getNetworkUploadSpeed() {
 }
 
 async function getPing() {
-  var hosts = ["facebook.com", "google.com", "yahoo.com"];
+  var hosts = ["facebook.com"];
   var sum = 0;
   var loss = 0;
   try {
@@ -73,8 +73,8 @@ async function getPing() {
     return result;
   } catch (error) {
     console.log("error ekak ping eke: " + error);
-    result = {avg:0, loss:0};
-    return result;
+    // result = {avg:0, loss:0};
+    // return result;
 
   }
 }
