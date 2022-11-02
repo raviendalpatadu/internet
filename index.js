@@ -73,8 +73,8 @@ async function getPing() {
     return result;
   } catch (error) {
     console.log("error ekak ping eke: " + error);
-    // result = {avg:0, loss:0};
-    // return result;
+    result = {avg:0, loss:0};
+    return result;
 
   }
 }
