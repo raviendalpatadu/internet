@@ -56,22 +56,24 @@ async function getPing() {
   var hosts = ["facebook.com", "google.com", "yahoo.com"];
   var sum = 0;
   var loss = 0;
+  try {
+    for (let host of hosts) {
+      // WARNING: -i 2 argument may not work in other platform like windows
+      let res = await ping.promise.probe(host, {
+        timeout: 5,
+      });
 
-  for (let host of hosts) {
-    // WARNING: -i 2 argument may not work in other platform like windows
-    let res = await ping.promise.probe(host, {
-      timeout: 30000,
-      extra: ['-i', '2'],
-    });
-    
-    sum = sum + res.time;
-    loss += parseInt(res.packetLoss);
+      sum = sum + res.time;
+      loss += parseInt(res.packetLoss);
+    }
+
+    var avg = sum / hosts.length;
+    loss = loss / hosts.length;
+    var result = { avg: avg, loss: loss };
+    return result;
+  } catch (error) {
+    console.log("error ekak ping eke" + error);
   }
-
-  var avg = sum / hosts.length;
-  loss = loss / hosts.length;
-  var result = { avg: 25, loss: 0 };
-  return result;
 }
 
 app.get("/checkspeed", async function (req, res) {
@@ -80,7 +82,7 @@ app.get("/checkspeed", async function (req, res) {
 
     let downs = await getNetworkUploadSpeed();
 
-    // let ping = await getPing();
+    let ping = await getPing();
 
     const data = { upspeed: ups.mbps, downspeed: downs.mbps, ping: ping };
     res.send(data);
