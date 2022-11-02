@@ -123,7 +123,8 @@ app.get("/checkspeed", async function (req, res) {
         city: locationData.city,
         region: locationData.region,
         country: locationData.country
-      }
+      },
+      data : locationData
     };
     res.send(data);
   } catch (error) {
