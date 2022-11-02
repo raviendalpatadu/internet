@@ -59,9 +59,7 @@ async function getPing() {
   try {
     for (let host of hosts) {
       // WARNING: -i 2 argument may not work in other platform like windows
-      let res = await ping.promise.probe(host, {
-        timeout: 5,
-      });
+      let res = await ping.promise.probe(host);
 
       sum = sum + res.time;
       loss += parseInt(res.packetLoss);
