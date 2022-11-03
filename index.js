@@ -16,7 +16,7 @@ app.use(express.static(path.join(__dirname, "scources")));
 
 async function getNetworkDownloadSpeed() {
   const baseUrl = "https://eu.httpbin.org/stream-bytes/500000";
-  const fileSizeInBytes = 500000;
+  const fileSizeInBytes = 50000000;
   try {
     const speed = await testNetworkSpeed.checkDownloadSpeed(
       baseUrl,
@@ -83,13 +83,15 @@ async function getLocation(req, res) {
     if (ipAddr) {
       var list = ipAddr.split(",");
       ipAddr = list[list.length - 1];
+      console.log(ipAddr);
     } else {
       ipAddr = req.connection.remoteAddress;
     }
 
     let location = axios
       .get(
-        "https://ipgeolocation.abstractapi.com/v1/?api_key=" + API_KEY + "&ip_address=" + ipAddr
+        "https://ipgeolocation.abstractapi.com/v1/?api_key=" + API_KEY 
+        // + "&ip_address=" + ipAddr
       )
       .then((response) => {
         return response.data;
