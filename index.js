@@ -14,11 +14,6 @@ const port = process.env.PORT || 3000;
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "scources")));
 
-app.get("/", function (req, res) {
-  console.log(IP.address("public"));
-  res.render("index", { speed: "" });
-});
-
 async function getNetworkDownloadSpeed() {
   const baseUrl = "https://eu.httpbin.org/stream-bytes/500000";
   const fileSizeInBytes = 500000;
@@ -82,9 +77,8 @@ async function getPing() {
   }
 }
 
-async function getLocation(req , res) {
+async function getLocation(req, res) {
   try {
-
     var ipAddr = req.headers["x-forwarded-for"];
     if (ipAddr) {
       var list = ipAddr.split(",");
@@ -92,11 +86,10 @@ async function getLocation(req , res) {
     } else {
       ipAddr = req.connection.remoteAddress;
     }
-  
+
     let location = axios
       .get(
-        "https://ipgeolocation.abstractapi.com/v1/?api_key=" +
-          API_KEY + "&ip_address=" + ipAddr
+        "https://ipgeolocation.abstractapi.com/v1/?api_key=" + API_KEY + "&ip_address=" + ipAddr
       )
       .then((response) => {
         return response.data;
@@ -104,13 +97,25 @@ async function getLocation(req , res) {
       .catch((error) => {
         console.log("error in geolocation api: " + error);
       });
-  
+
     return location;
-  }
-  catch (error){
+  } catch (error) {
     console.log("error ekak getloc() eke" + error);
   }
 }
+
+app.get("/", async function (req, res) {
+  let locData = await getLocation(req, res);
+
+  res.render("index", {
+    ispName: locData.connection.isp_name,
+    ipAddress: locData.ip_address,
+    ispOrg: locData.connection.autonomous_system_organization,
+    city: locData.city,
+    region: locData.region,
+    country: locData.country,
+  });
+});
 
 app.get("/checkspeed", async function (req, res) {
   try {
