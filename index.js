@@ -82,8 +82,8 @@ async function getLocation(req, res) {
     var ipAddr = req.headers["x-forwarded-for"];
     if (ipAddr) {
       var list = ipAddr.split(",");
-      ipAddr = list[list.length - 1];
       console.log(ipAddr);
+      ipAddr = list[list.length - 1];
     } else {
       ipAddr = req.connection.remoteAddress;
     }
