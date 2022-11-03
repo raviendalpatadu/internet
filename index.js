@@ -6,6 +6,8 @@ const path = require("path");
 const { type } = require("os");
 const axios = require("axios");
 const API_KEY = "a30243bb6649460ab61e3f3f6be3fb07";
+const IP = require("ip");
+
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -14,6 +16,7 @@ app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "scources")));
 
 app.get("/", function (req, res) {
+  console.log(IP.address("public"));
   res.render("index", { speed: "" });
 });
 
@@ -80,17 +83,6 @@ async function getPing() {
   }
 }
 
-async function getLocation(API_KEY) {
-  axios
-    .get("https://ipgeolocation.abstractapi.com/v1/?api_key=" + API_KEY)
-    .then((response) => {
-      // console.log(response.data)
-      return response.data;
-    })
-    .catch((error) => {
-      console.log("error in geolocation api: " + error);
-    });
-}
 app.get("/checkspeed", async function (req, res) {
   try {
     let ups = await getNetworkDownloadSpeed();
@@ -99,10 +91,9 @@ app.get("/checkspeed", async function (req, res) {
 
     let ping = await getPing();
 
-    // let locationData = await getLocation(API_KEY);
 
     let locationData = await axios
-      .get("https://ipgeolocation.abstractapi.com/v1/?api_key=" + API_KEY)
+      .get("https://ipgeolocation.abstractapi.com/v1/?api_key=" + API_KEY + IP.address("public"))
       .then((response) => {
         return response.data;
       })
@@ -110,6 +101,7 @@ app.get("/checkspeed", async function (req, res) {
         console.log("error in geolocation api: " + error);
       });
 
+      // console.log(locationData);
     const data = {
       upspeed: ups.mbps,
       downspeed: downs.mbps,
