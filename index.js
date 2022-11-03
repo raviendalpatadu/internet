@@ -93,7 +93,7 @@ app.get("/checkspeed", async function (req, res) {
 
 
     let locationData = await axios
-      .get("https://ipgeolocation.abstractapi.com/v1/?api_key=" + API_KEY + IP.address("public"))
+      .get("https://ipgeolocation.abstractapi.com/v1/?api_key=" + API_KEY + IP.address("private"))
       .then((response) => {
         return response.data;
       })
