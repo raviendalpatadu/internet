@@ -91,9 +91,16 @@ app.get("/checkspeed", async function (req, res) {
 
     let ping = await getPing();
 
+    var ipAddr = req.headers["x-forwarded-for"];
+    if (ipAddr){
+      var list = ipAddr.split(",");
+      ipAddr = list[list.length-1];
+    } else {
+      ipAddr = req.connection.remoteAddress;
+    }
 
     let locationData = await axios
-      .get("https://ipgeolocation.abstractapi.com/v1/?api_key=" + API_KEY + IP.address("private"))
+      .get("https://ipgeolocation.abstractapi.com/v1/?api_key=" + API_KEY + "&ip_address=" + ipAddr)
       .then((response) => {
         return response.data;
       })
@@ -119,14 +126,7 @@ app.get("/checkspeed", async function (req, res) {
       data : locationData
     };
 
-    var ipAddr = req.headers["x-forwarded-for"];
-    if (ipAddr){
-      var list = ipAddr.split(",");
-      ipAddr = list[list.length-1];
-    } else {
-      ipAddr = req.connection.remoteAddress;
-    }
-
+    
     console.log("fsf: "+ ipAddr)
     res.send(data);
   } catch (error) {
