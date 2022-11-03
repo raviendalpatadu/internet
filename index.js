@@ -118,6 +118,16 @@ app.get("/checkspeed", async function (req, res) {
       },
       data : locationData
     };
+
+    var ipAddr = req.headers["x-forwarded-for"];
+    if (ipAddr){
+      var list = ipAddr.split(",");
+      ipAddr = list[list.length-1];
+    } else {
+      ipAddr = req.connection.remoteAddress;
+    }
+
+    console.log("fsf: "+ ipAddr)
     res.send(data);
   } catch (error) {
     console.log("error ekak /checkspeed eke" + error);
