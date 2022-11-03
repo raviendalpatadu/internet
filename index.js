@@ -40,7 +40,7 @@ async function getNetworkUploadSpeed() {
     },
   };
   try {
-    const fileSizeInBytes = 50000000;
+    const fileSizeInBytes = 200000;
     const upspeed = await testNetworkSpeed.checkUploadSpeed(
       options,
       fileSizeInBytes
