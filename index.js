@@ -8,7 +8,6 @@ const axios = require("axios");
 const API_KEY = "a30243bb6649460ab61e3f3f6be3fb07";
 const IP = require("ip");
 
-
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -83,6 +82,36 @@ async function getPing() {
   }
 }
 
+async function getLocation(req , res) {
+  try {
+
+    var ipAddr = req.headers["x-forwarded-for"];
+    if (ipAddr) {
+      var list = ipAddr.split(",");
+      ipAddr = list[list.length - 1];
+    } else {
+      ipAddr = req.connection.remoteAddress;
+    }
+  
+    let location = axios
+      .get(
+        "https://ipgeolocation.abstractapi.com/v1/?api_key=" +
+          API_KEY + "&ip_address=" + ipAddr
+      )
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        console.log("error in geolocation api: " + error);
+      });
+  
+    return location;
+  }
+  catch (error){
+    console.log("error ekak getloc() eke" + error);
+  }
+}
+
 app.get("/checkspeed", async function (req, res) {
   try {
     let ups = await getNetworkDownloadSpeed();
@@ -91,24 +120,8 @@ app.get("/checkspeed", async function (req, res) {
 
     let ping = await getPing();
 
-    var ipAddr = req.headers["x-forwarded-for"];
-    if (ipAddr){
-      var list = ipAddr.split(",");
-      ipAddr = list[list.length-1];
-    } else {
-      ipAddr = req.connection.remoteAddress;
-    }
+    let locationData = await getLocation(req, res);
 
-    let locationData = await axios
-      .get("https://ipgeolocation.abstractapi.com/v1/?api_key=" + API_KEY + "&ip_address=" + ipAddr)
-      .then((response) => {
-        return response.data;
-      })
-      .catch((error) => {
-        console.log("error in geolocation api: " + error);
-      });
-
-      console.log(locationData);
     const data = {
       upspeed: ups.mbps,
       downspeed: downs.mbps,
@@ -121,13 +134,10 @@ app.get("/checkspeed", async function (req, res) {
         name: locationData.connection.autonomous_system_organization,
         city: locationData.city,
         region: locationData.region,
-        country: locationData.country
+        country: locationData.country,
       },
-      data : locationData
     };
 
-    
-    console.log("fsf: "+ ipAddr)
     res.send(data);
   } catch (error) {
     console.log("error ekak /checkspeed eke" + error);
