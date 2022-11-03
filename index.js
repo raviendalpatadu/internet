@@ -101,7 +101,7 @@ app.get("/checkspeed", async function (req, res) {
         console.log("error in geolocation api: " + error);
       });
 
-      // console.log(locationData);
+      console.log(locationData);
     const data = {
       upspeed: ups.mbps,
       downspeed: downs.mbps,
