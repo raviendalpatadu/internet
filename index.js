@@ -40,7 +40,7 @@ async function getNetworkUploadSpeed() {
     },
   };
   try {
-    const fileSizeInBytes = 200000;
+    const fileSizeInBytes = 2000000;
     const upspeed = await testNetworkSpeed.checkUploadSpeed(
       options,
       fileSizeInBytes
@@ -52,7 +52,7 @@ async function getNetworkUploadSpeed() {
 }
 
 async function getPing() {
-  var hosts = ["google.com"];
+  var hosts = ["google.com", "yahoo.com", "facebook.com"];
   var sum = 0;
   var loss = 0;
   try {
@@ -90,7 +90,7 @@ async function getLocation(req, res) {
 
     let location = axios
       .get(
-        "https://ipgeolocation.abstractapi.com/v1/?api_key=" + API_KEY + "&ip_address=" + ipAddr
+        "https://ipgeolocation.abstractapi.com/v1/?api_key=" + API_KEY //+ "&ip_address=" + ipAddr
       )
       .then((response) => {
         return response.data;
