@@ -90,7 +90,7 @@ async function getLocation(req, res) {
 
     let location = axios
       .get(
-        "https://ipgeolocation.abstractapi.com/v1/?api_key=" + API_KEY + "&ip_address=" + ipAddr
+        "https://ipgeolocation.abstractapi.com/v1/?api_key=" + API_KEY //+ "&ip_address=" + ipAddr
       )
       .then((response) => {
         return response.data;
@@ -106,16 +106,30 @@ async function getLocation(req, res) {
 }
 
 app.get("/", async function (req, res) {
-  let locData = await getLocation(req, res);
-
-  res.render("index", {
-    ispName: locData.connection.isp_name,
-    ipAddress: locData.ip_address,
-    ispOrg: locData.connection.autonomous_system_organization,
-    city: locData.city,
-    region: locData.region,
-    country: locData.country,
-  });
+  try{
+    let locData = await getLocation(req, res);
+  
+    res.render("index", {
+      ispName: locData.connection.isp_name,
+      ipAddress: locData.ip_address,
+      ispOrg: locData.connection.autonomous_system_organization,
+      city: locData.city,
+      region: locData.region,
+      country: locData.country,
+    });
+  }
+  catch(error){
+    console.log("error ekak / eke" + error);
+    res.render("index", {
+      ispName: "Error",
+      ipAddress: "---",
+      ispOrg: "Error",
+      city: "---",
+      region: "---",
+      country: "---",
+      btnDisable : true,
+    });
+  }
 });
 
 app.get("/checkspeed", async function (req, res) {
@@ -147,6 +161,14 @@ app.get("/checkspeed", async function (req, res) {
     res.send(data);
   } catch (error) {
     console.log("error ekak /checkspeed eke" + error);
+    res.render("index", {
+      ispName: "Error",
+      ipAddress: "---",
+      ispOrg: "Error",
+      city: "---",
+      region: "---",
+      country: "---",
+    });
   }
 });
 
