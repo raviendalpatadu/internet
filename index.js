@@ -5,7 +5,7 @@ const testNetworkSpeed = new NetworkSpeed();
 const path = require("path");
 const { type } = require("os");
 const axios = require("axios");
-const API_KEY = "a30243bb6649460ab61e3f3f6be3fb07";
+const API_KEY = "d319718eb37a42b9859ccda86864bf99";
 const IP = require("ip");
 
 const app = express();
@@ -90,7 +90,7 @@ async function getLocation(req, res) {
 
     let location = axios
       .get(
-        "https://ipgeolocation.abstractapi.com/v1/?api_key=" + API_KEY //+ "&ip_address=" + ipAddr
+        "https://api.ipgeolocation.io/ipgeo?apiKey=" + API_KEY
       )
       .then((response) => {
         return response.data;
@@ -110,12 +110,12 @@ app.get("/", async function (req, res) {
     let locData = await getLocation(req, res);
   
     res.render("index", {
-      ispName: locData.connection.isp_name,
+      ispName: locData.isp,
       ipAddress: locData.ip_address,
-      ispOrg: locData.connection.autonomous_system_organization,
+      ispOrg: locData.organization,
       city: locData.city,
-      region: locData.region,
-      country: locData.country,
+      region: locData.state_prov,
+      country: locData.country_name,
     });
   }
   catch(error){
@@ -147,14 +147,14 @@ app.get("/checkspeed", async function (req, res) {
       downspeed: downs.mbps,
       ping: ping,
       profile: {
-        ip_address: locationData.ip_address,
-        isp_name: locationData.connection.isp_name,
+        ip_address: locationData.ip,
+        isp_name: locationData.organization,
       },
       ISP: {
-        name: locationData.connection.autonomous_system_organization,
+        name: locationData.organization,
         city: locationData.city,
-        region: locationData.region,
-        country: locationData.country,
+        region: locationData.state_prov,
+        country: locationData.country_name,
       },
     };
 

@@ -36,7 +36,7 @@
               <div>
                 <h1>Check Your Internet Speed</h1>
                 <p>
-                  <button class="btn-danger" id="check">Check Speed</button>
+                  <button class="btn-danger" id="check">Check sSpeed</button>
                 </p>
               </div>
             </div>
@@ -266,8 +266,8 @@
           var download = data.downspeed;
           var ping = data.ping.avg;
           var packetLoss = data.ping.loss;
-          var profile = data.profile;
-          var ISP = data.ISP;
+          // var profile = data.profile;
+          // var ISP = data.ISP;
 
           console.log(data);
           $(".loader").fadeOut(200);
@@ -284,21 +284,21 @@
           $("#packetLoss").fadeIn(4000);
           $("#packetLoss > span").text(packetLoss);
 
-          $("#profile").fadeIn(5000);
-          $("#profile > div > div > .card-title").text(profile.isp_name);
-          $("#profile > div > div > p").text(profile.ip_address);
+          // $("#profile").fadeIn(5000);
+          // $("#profile > div > div > .card-title").text(profile.isp_name);
+          // $("#profile > div > div > p").text(profile.ip_address);
 
-          $("#isp").fadeIn(6000);
-          $("#isp > div > div > .card-title").text(ISP.name);
-          $("#isp > div > div > p").html(
-            "<center>" +
-              ISP.city +
-              "<br>" +
-              ISP.region +
-              "<br>" +
-              ISP.country +
-              "</center>"
-          );
+          // $("#isp").fadeIn(6000);
+          // $("#isp > div > div > .card-title").text(ISP.name);
+          // $("#isp > div > div > p").html(
+          //   "<center>" +
+          //     ISP.city +
+          //     "<br>" +
+          //     ISP.region +
+          //     "<br>" +
+          //     ISP.country +
+          //     "</center>"
+          // );
         },
       });
     });
