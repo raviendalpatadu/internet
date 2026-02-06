@@ -48,15 +48,15 @@ pipeline {
                 script {
                     echo "Deploying application..."
                     if (isUnix()) {
-                        sh "docker-compose down || true"
-                        // Force remove the container to avoid name conflicts
-                        sh "docker rm -f myapp_container || true"
-                        sh "docker-compose up -d --build"
+                        // Stop and remove existing container
+                        sh "docker rm -f ${CONTAINER_NAME} || true"
+                        // Run the new container from the built image
+                        sh "docker run -d -p ${PORT}:3000 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}"
                     } else {
-                        bat "docker-compose down || exit 0"
-                        // Force remove the container to avoid name conflicts
-                        bat "docker rm -f myapp_container || exit 0"
-                        bat "docker-compose up -d --build"
+                        // Stop and remove existing container
+                        bat "docker rm -f ${CONTAINER_NAME} || exit 0"
+                        // Run the new container from the built image
+                        bat "docker run -d -p ${PORT}:3000 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}"
                     }
                 }
             }
