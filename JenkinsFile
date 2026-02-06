@@ -49,9 +49,13 @@ pipeline {
                     echo "Deploying application..."
                     if (isUnix()) {
                         sh "docker-compose down || true"
-                        sh "docker-compose up -d"
+                        // Force remove the container to avoid name conflicts
+                        sh "docker rm -f myapp_continer || true"
+                        sh "docker-compose up -d --build"
                     } else {
                         bat "docker-compose down || exit 0"
+                        // Force remove the container to avoid name conflicts
+                        bat "docker rm -f myapp_continer || exit 0"
                         bat "docker-compose up -d"
                     }
                 }
