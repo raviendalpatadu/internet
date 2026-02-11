@@ -21,7 +21,7 @@ pipeline {
                     echo "Installing dependencies and running tests..."
                     if (isUnix()) {
                         sh 'npm install'
-                        sh 'npm test"'
+                        sh 'npm test'
                     } else {
                         bat 'npm install'
                         bat 'npm test'
