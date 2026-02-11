@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'node:lts-alpine'
+            args '-u root -v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
 
     environment {
         APP_NAME = 'internet-speed-test'
@@ -9,6 +14,14 @@ pipeline {
     }
 
     stages {
+        stage('Setup Environment') {
+            steps {
+                script {
+                    sh 'apk add --no-cache docker-cli curl'
+                }
+            }
+        }
+
         stage('Checkout') {
             steps {
                 checkout scm
@@ -19,13 +32,8 @@ pipeline {
             steps {
                 script {
                     echo "Installing dependencies and running tests..."
-                    if (isUnix()) {
-                        sh 'npm install'
-                        sh 'npm test'
-                    } else {
-                        bat 'npm install'
-                        bat 'npm test'
-                    }
+                    sh 'npm install'
+                    sh 'npm test'
                 }
             }
         }
@@ -34,11 +42,7 @@ pipeline {
             steps {
                 script {
                     echo "Building Docker image..."
-                    if (isUnix()) {
-                        sh "docker build -t ${DOCKER_IMAGE} ."
-                    } else {
-                        bat "docker build -t ${DOCKER_IMAGE} ."
-                    }
+                    sh "docker build -t ${DOCKER_IMAGE} ."
                 }
             }
         }
@@ -47,17 +51,10 @@ pipeline {
             steps {
                 script {
                     echo "Deploying application..."
-                    if (isUnix()) {
-                        // Stop and remove existing container
-                        sh "docker rm -f ${CONTAINER_NAME} || true"
-                        // Run the new container from the built image
-                        sh "docker run -d -p ${PORT}:3000 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}"
-                    } else {
-                        // Stop and remove existing container
-                        bat "docker rm -f ${CONTAINER_NAME} || exit 0"
-                        // Run the new container from the built image
-                        bat "docker run -d -p ${PORT}:3000 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}"
-                    }
+                    // Stop and remove existing container
+                    sh "docker rm -f ${CONTAINER_NAME} || true"
+                    // Run the new container from the built image
+                    sh "docker run -d -p ${PORT}:3000 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}"
                 }
             }
         }
@@ -68,11 +65,8 @@ pipeline {
                     echo "Waiting for service to start..."
                     sleep 5
                     echo "Checking health service..."
-                    if (isUnix()) {
-                        sh "curl -f http://localhost:${PORT} || exit 1"
-                    } else {
-                         powershell "try { \$r = Invoke-WebRequest -Uri 'http://localhost:${PORT}' -UseBasicParsing; if (\$r.StatusCode -ne 200) { exit 1 } } catch { exit 1 }"
-                    }
+                    // Check health from inside the container to avoid network issues between sibling containers
+                    sh "docker exec ${CONTAINER_NAME} curl -f http://localhost:3000 || exit 1"
                 }
             }
         }
