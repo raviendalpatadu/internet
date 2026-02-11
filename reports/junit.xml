@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="14" failures="0" errors="0" time="1.872">
+  <testsuite name="Unit Tests" errors="0" failures="0" skipped="0" timestamp="2026-02-11T19:07:57" time="1.741" tests="14">
+    <testcase classname="Unit Tests getNetworkDownloadSpeed should return speed object on successful download speed check" name="Unit Tests getNetworkDownloadSpeed should return speed object on successful download speed check" time="0.247">
+    </testcase>
+    <testcase classname="Unit Tests getNetworkDownloadSpeed should handle errors and log error message" name="Unit Tests getNetworkDownloadSpeed should handle errors and log error message" time="0.067">
+    </testcase>
+    <testcase classname="Unit Tests getNetworkUploadSpeed should return speed object on successful upload speed check" name="Unit Tests getNetworkUploadSpeed should return speed object on successful upload speed check" time="0.07">
+    </testcase>
+    <testcase classname="Unit Tests getNetworkUploadSpeed should handle errors and log error message" name="Unit Tests getNetworkUploadSpeed should handle errors and log error message" time="0.067">
+    </testcase>
+    <testcase classname="Unit Tests getPing should return average ping and packet loss for all hosts" name="Unit Tests getPing should return average ping and packet loss for all hosts" time="0.059">
+    </testcase>
+    <testcase classname="Unit Tests getPing should handle errors and return default values" name="Unit Tests getPing should handle errors and return default values" time="0.052">
+    </testcase>
+    <testcase classname="Unit Tests getLocation should return location data when x-forwarded-for header is present" name="Unit Tests getLocation should return location data when x-forwarded-for header is present" time="0.058">
+    </testcase>
+    <testcase classname="Unit Tests getLocation should use remoteAddress when x-forwarded-for header is missing" name="Unit Tests getLocation should use remoteAddress when x-forwarded-for header is missing" time="0.049">
+    </testcase>
+    <testcase classname="Unit Tests getLocation should handle axios errors" name="Unit Tests getLocation should handle axios errors" time="0.065">
+    </testcase>
+    <testcase classname="Unit Tests getLocation should handle unexpected errors in function body (outer try/catch)" name="Unit Tests getLocation should handle unexpected errors in function body (outer try/catch)" time="0.057">
+    </testcase>
+    <testcase classname="Unit Tests Express Routes GET / should render index with location data" name="Unit Tests Express Routes GET / should render index with location data" time="0.063">
+    </testcase>
+    <testcase classname="Unit Tests Express Routes GET / should handle errors in route" name="Unit Tests Express Routes GET / should handle errors in route" time="0.058">
+    </testcase>
+    <testcase classname="Unit Tests Express Routes GET /checkspeed should send speed data on success" name="Unit Tests Express Routes GET /checkspeed should send speed data on success" time="0.058">
+    </testcase>
+    <testcase classname="Unit Tests Express Routes GET /checkspeed should handle errors in checkspeed route" name="Unit Tests Express Routes GET /checkspeed should handle errors in checkspeed route" time="0.056">
+    </testcase>
+  </testsuite>
+</testsuites>

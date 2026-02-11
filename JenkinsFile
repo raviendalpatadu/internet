@@ -36,6 +36,14 @@ pipeline {
                     sh 'npm test'
                 }
             }
+            post {
+                always {
+                    junit 'reports/junit.xml'
+                    // Uncomment the following line if you have the Cobertura plugin installed
+                    // cobertura coberturaReportFile: 'coverage/cobertura-coverage.xml' 
+                    archiveArtifacts artifacts: 'coverage/**, reports/**', allowEmptyArchive: true
+                }
+            }
         }
 
         stage('Build Artifact') {

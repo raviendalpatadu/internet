@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --ci --config=jest.config.js",
     "start": "nodemon -L index.js"
   },
   "author": "",
@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@jest/globals": "^30.2.0",
-    "jest": "^30.2.0"
+    "jest": "^30.2.0",
+    "jest-junit": "^16.0.0"
   }
 }

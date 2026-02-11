@@ -180,4 +180,7 @@ if (require.main === module) {
 module.exports = {
   getNetworkDownloadSpeed,
   getNetworkUploadSpeed,
+  getPing,
+  getLocation,
+  app,
 };
