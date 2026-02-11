@@ -83,9 +83,13 @@ pipeline {
     post {
         always {
             cleanWs()
+            junit allowEmptyResults: true,
+            stdioRetention: 'ALL',
+            testResults: './reports/junit.xml'
         }
         success {
             echo 'Pipeline completed successfully.'
+            
         }
         failure {
             echo 'Pipeline failed.'
