@@ -17,8 +17,9 @@ app.use(express.static(path.join(__dirname, "scources")));
 async function getNetworkDownloadSpeed() {
   const baseUrl = "https://eu.httpbin.org/stream-bytes/500000";
   const fileSizeInBytes = 50000000;
+  let speed;
   try {
-    const speed = await testNetworkSpeed.checkDownloadSpeed(
+    speed = await testNetworkSpeed.checkDownloadSpeed(
       baseUrl,
       fileSizeInBytes
     );
@@ -172,4 +173,11 @@ app.get("/checkspeed", async function (req, res) {
   }
 });
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+if (require.main === module) {
+  app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+}
+
+module.exports = {
+  getNetworkDownloadSpeed,
+  getNetworkUploadSpeed,
+};

@@ -21,10 +21,10 @@ pipeline {
                     echo "Installing dependencies and running tests..."
                     if (isUnix()) {
                         sh 'npm install'
-                        sh 'npm test || echo "Tests passed or ignored"'
+                        sh 'npm test"'
                     } else {
                         bat 'npm install'
-                        bat 'npm test || echo Tests passed or ignored'
+                        bat 'npm test'
                     }
                 }
             }

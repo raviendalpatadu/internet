@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\"",
+    "test": "jest",
     "start": "nodemon -L index.js"
   },
   "author": "",
@@ -17,5 +17,9 @@
     "network-speed": "^2.1.1",
     "nodemon": "^2.0.20",
     "ping": "^0.4.2"
+  },
+  "devDependencies": {
+    "@jest/globals": "^30.2.0",
+    "jest": "^30.2.0"
   }
 }
